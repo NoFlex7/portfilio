@@ -1,4 +1,4 @@
-export type Lang = "uz" | "ru" | "en";
+  export type Lang = "uz" | "ru" | "en";
 
 export const PROFILE = {
   fullName: "Salohiddin Sadullaev",
@@ -9,7 +9,7 @@ export const PROFILE = {
     github: "https://github.com/NoFlex7",
     linkedin: "https://linkedin.com/in/NoFlex7",
     telegram: "https://t.me/eosnwx",
-    website: "https://salohiddin.dev",
+    website: "https://yourdomain.com",
   },
   title: {
     uz: "Full Stack Developer",
@@ -92,7 +92,7 @@ export const SKILLS = [
 
 export const EXPERIENCE = [
   {
-    period: "2026 — hozir",
+    period: "2024 — hozir",
     role: "Full Stack Developer",
     company: "Freelance / Team Projects",
     bullets: [
@@ -102,7 +102,7 @@ export const EXPERIENCE = [
     ],
   },
   {
-    period: "2023 — 2026",
+    period: "2023 — 2024",
     role: "Frontend Developer",
     company: "Pet Projects",
     bullets: [
