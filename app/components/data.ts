@@ -3,7 +3,7 @@ export type Lang = "uz" | "ru" | "en";
 export const PROFILE = {
   fullName: "Salohiddin Sadullaev",
   location: "Toshkent, Uzbekistan",
-  email: "sadullaernazarovich@gmail.com@gmail.com",
+  email: "sadullaernazarovich@gmail.com",
   phone: "+998 95 922 92 94",
   links: {
     github: "https://github.com/NoFlex7",
