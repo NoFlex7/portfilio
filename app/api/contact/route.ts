@@ -1,4 +1,13 @@
 import { NextResponse } from "next/server";
+import fs from "fs";
+
+function readSecret(name: string) {
+  try {
+    return fs.readFileSync(`/etc/secrets/${name}`, "utf8").trim();
+  } catch {
+    return "";
+  }
+}
 
 export async function POST(req: Request) {
   try {
@@ -11,12 +20,15 @@ export async function POST(req: Request) {
       );
     }
 
-    const token = process.env.TELEGRAM_BOT_TOKEN;
-    const chatId = process.env.TELEGRAM_CHAT_ID;
+    // ✅ SECRET FILES’dan o‘qiymiz
+    const token =
+      process.env.TELEGRAM_BOT_TOKEN || readSecret("TELEGRAM_BOT_TOKEN");
+    const chatId =
+      process.env.TELEGRAM_CHAT_ID || readSecret("TELEGRAM_CHAT_ID");
 
     if (!token || !chatId) {
       return NextResponse.json(
-        { ok: false, error: "Telegram env not set" },
+        { ok: false, error: "Telegram secret not set" },
         { status: 500 }
       );
     }
@@ -41,13 +53,13 @@ export async function POST(req: Request) {
 
     if (!tg.ok) {
       return NextResponse.json(
-        { ok: false, error: "Telegram failed" },
+        { ok: false, error: "Telegram send failed" },
         { status: 500 }
       );
     }
 
     return NextResponse.json({ ok: true });
-  } catch {
+  } catch (e) {
     return NextResponse.json(
       { ok: false, error: "Server error" },
       { status: 500 }
