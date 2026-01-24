@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import ThemeToggle from "./ThemeToggle";
 import LangToggle from "./LangToggle";
+import CommandPalette from "./CommandPalette";
+
 import type { Lang } from "./data";
 import { COPY, PROFILE } from "./data";
 
@@ -26,11 +28,18 @@ const FALLBACK_NAV: NavDict = {
   contact: "Contact",
 };
 
-export default function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
+export default function Navbar({
+  lang,
+  setLang,
+}: {
+  lang: Lang;
+  setLang: (l: Lang) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("#home");
 
-  const nav: NavDict = (COPY as any)?.nav?.[lang] ?? (COPY as any)?.nav?.en ?? FALLBACK_NAV;
+  const nav: NavDict =
+    (COPY as any)?.nav?.[lang] ?? (COPY as any)?.nav?.en ?? FALLBACK_NAV;
 
   const items = useMemo(
     () => [
@@ -45,7 +54,9 @@ export default function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lan
   );
 
   useEffect(() => {
-    const sectionEls = items.map((i) => document.querySelector(i.href)).filter(Boolean) as HTMLElement[];
+    const sectionEls = items
+      .map((i) => document.querySelector(i.href))
+      .filter(Boolean) as HTMLElement[];
 
     const onScroll = () => {
       const y = window.scrollY + 140;
@@ -75,8 +86,14 @@ export default function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lan
     >
       <div className="border-b border-slate-200/60 dark:border-slate-800/60 bg-white/55 dark:bg-slate-950/45 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-3">
-          <a href="#home" onClick={() => onNavClick("#home")} className="group inline-flex items-center gap-2 font-semibold tracking-wide">
-            <span className="text-slate-950 dark:text-white">{PROFILE.fullName.split(" ")[0]}</span> 
+          <a
+            href="#home"
+            onClick={() => onNavClick("#home")}
+            className="group inline-flex items-center gap-2 font-semibold tracking-wide"
+          >
+            <span className="text-slate-950 dark:text-white">
+              {PROFILE.fullName.split(" ")[0]}
+            </span>
             <span className="text-slate-500 dark:text-slate-400">.dev</span>
             <span className="ml-1 h-1.5 w-1.5 rounded-full bg-emerald-500/80 opacity-70 group-hover:opacity-100 transition" />
           </a>
@@ -105,8 +122,12 @@ export default function Navbar({ lang, setLang }: { lang: Lang; setLang: (l: Lan
           </nav>
 
           <div className="flex items-center gap-2">
+            {/* ✅ NEW */}
+            <CommandPalette lang={lang} />
+
             <LangToggle lang={lang} setLang={setLang} />
             <ThemeToggle />
+
             <button
               onClick={() => setOpen((v) => !v)}
               className="md:hidden inline-flex items-center justify-center rounded-xl border border-slate-200/70 dark:border-slate-800 bg-white/60 dark:bg-slate-900/30 px-3 py-2 text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-900 transition"

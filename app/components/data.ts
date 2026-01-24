@@ -92,7 +92,7 @@ export const SKILLS = [
 
 export const EXPERIENCE = [
   {
-    period: "2024 — hozir",
+    period: "2026 — hozir",
     role: "Full Stack Developer",
     company: "Freelance / Team Projects",
     bullets: [
@@ -102,7 +102,7 @@ export const EXPERIENCE = [
     ],
   },
   {
-    period: "2023 — 2024",
+    period: "2023 — 2026",
     role: "Frontend Developer",
     company: "Pet Projects",
     bullets: [
@@ -118,7 +118,7 @@ export const PROJECTS = [
     name: "E-commerce Platform",
     desc: "Auth, cart, admin panel, product CRUD, orders, search & filter.",
     stack: ["Next.js", "Node.js", "PostgreSQL"],
-    links: { demo: "#", code: "#" },
+    links: { demo: "https://zb-qhvz.onrender.com", code: "" },
   },
   {
     name: "CRM / Dashboard",

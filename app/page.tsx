@@ -9,6 +9,9 @@ import Section from "./components/Section";
 import { Stagger, MotionItem, Reveal } from "./components/Motion";
 import CopyText from "./components/CopyText";
 import ParallaxBlobs from "./components/ParallaxBlobs";
+import ProjectModal from "./components/ProjectModal";
+import Counter from "./components/Counter";
+import ContactForm from "./components/ContactForm";
 
 import type { Lang } from "./components/data";
 import {
@@ -29,16 +32,24 @@ import {
   IconPhone,
 } from "./components/icons";
 
+type Project = (typeof PROJECTS)[number];
+
 export default function Page() {
   const [lang, setLang] = useState<Lang>("uz");
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
 
   const t = useMemo(() => {
     return {
-      nav: COPY.nav[lang],
       titles: COPY.sectionTitles[lang],
       hero: PROFILE.hero[lang],
       about: COPY.about[lang],
       job: PROFILE.title[lang],
+      contactText:
+        lang === "uz"
+          ? "Telegram yoki email orqali yozing yoki formani to‘ldiring."
+          : lang === "ru"
+          ? "Пишите в Telegram, email или заполните форму."
+          : "Reach me via Telegram, email or the form.",
     };
   }, [lang]);
 
@@ -46,7 +57,7 @@ export default function Page() {
     <div className="min-h-screen">
       <Navbar lang={lang} setLang={setLang} />
 
-      {/* HERO + PARALLAX */}
+      {/* HERO */}
       <section id="home" className="relative">
         <ParallaxBlobs />
 
@@ -55,8 +66,8 @@ export default function Page() {
             {/* LEFT */}
             <Stagger className="space-y-5">
               <MotionItem>
-                <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-800 bg-white/60 dark:bg-slate-950/40 px-4 py-2 text-sm text-slate-600 dark:text-slate-300">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+                <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-800 bg-white/60 dark:bg-slate-950/40 px-4 py-2 text-sm">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
                   {t.hero.badge}
                 </div>
               </MotionItem>
@@ -74,13 +85,11 @@ export default function Page() {
               </MotionItem>
 
               <MotionItem>
-                <p className={`leading-relaxed ${ui.textSub}`}>
-                  {t.hero.desc}
-                </p>
+                <p className={ui.textSub}>{t.hero.desc}</p>
               </MotionItem>
 
               <MotionItem>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex gap-3 flex-wrap">
                   <a href="#projects" className={ui.btnPrimary}>
                     {t.hero.cta1} <IconArrowRight className="h-4 w-4" />
                   </a>
@@ -92,55 +101,43 @@ export default function Page() {
                   </a>
                 </div>
               </MotionItem>
-
-              <MotionItem>
-                <div className="flex flex-wrap gap-2 text-xs">
-                  <span className={ui.pill}>{PROFILE.location}</span>
-                  <span className={ui.pill}>{PROFILE.phone}</span>
-                  <span className={ui.pill}>{PROFILE.email}</span>
-                </div>
-              </MotionItem>
             </Stagger>
 
-            {/* RIGHT CARD */}
+            {/* RIGHT */}
             <Reveal>
               <div className={`${ui.card} p-6`}>
-                <div className="flex items-center gap-4">
-                  <div className="h-14 w-14 rounded-2xl border border-slate-200/70 dark:border-slate-800 bg-white/60 dark:bg-slate-950/40 flex items-center justify-center text-xl font-bold">
-                    SS
-                  </div>
-                  <div>
-                    <p className="text-lg font-semibold">
-                      {PROFILE.fullName}
-                    </p>
-                    <p className={ui.textSub}>
-                      {t.job} • {PROFILE.location}
-                    </p>
-                  </div>
-                </div>
+                <p className="font-semibold">{PROFILE.fullName}</p>
+                <p className={ui.textSub}>
+                  {t.job} • {PROFILE.location}
+                </p>
 
                 <div className="mt-6 grid grid-cols-3 gap-3">
-                  {[
-                    { k: "10+", v: "Projects" },
-                    { k: "2y+", v: "Experience" },
-                    { k: "Clean", v: "Code" },
-                  ].map((x) => (
-                    <div
-                      key={x.v}
-                      className="rounded-2xl border border-slate-200/70 dark:border-slate-800 bg-white/60 dark:bg-slate-950/40 p-4"
-                    >
-                      <p className="text-xl font-bold">{x.k}</p>
-                      <p className="text-xs text-slate-500">{x.v}</p>
-                    </div>
-                  ))}
-                </div>
+  <div className="rounded-2xl border border-slate-200/70 dark:border-slate-800 bg-white/50 dark:bg-slate-950/35 backdrop-blur px-4 py-3">
+    <p className="text-xl font-bold leading-none">
+      <Counter to={10} />+
+    </p>
+    <p className="mt-1 text-[11px] text-slate-500">Projects</p>
+  </div>
+
+  <div className="rounded-2xl border border-slate-200/70 dark:border-slate-800 bg-white/50 dark:bg-slate-950/35 backdrop-blur px-4 py-3">
+    <p className="text-xl font-bold leading-none">
+      <Counter to={2} />y+
+    </p>
+    <p className="mt-1 text-[11px] text-slate-500">Experience</p>
+  </div>
+
+  <div className="rounded-2xl border border-slate-200/70 dark:border-slate-800 bg-white/50 dark:bg-slate-950/35 backdrop-blur px-4 py-3">
+    <p className="text-xl font-bold leading-none">Clean</p>
+    <p className="mt-1 text-[11px] text-slate-500">Code</p>
+  </div>
+</div>
+
 
                 <div className="mt-6 flex gap-3">
                   <a
                     href={PROFILE.links.github}
                     target="_blank"
                     className={ui.btnGhost}
-                    rel="noreferrer"
                   >
                     <IconGithub className="h-4 w-4" /> GitHub
                   </a>
@@ -148,7 +145,6 @@ export default function Page() {
                     href={PROFILE.links.website}
                     target="_blank"
                     className={ui.btnGhost}
-                    rel="noreferrer"
                   >
                     <IconLink className="h-4 w-4" /> Website
                   </a>
@@ -161,49 +157,13 @@ export default function Page() {
 
       {/* ABOUT */}
       <Section id="about" title={t.titles.about}>
-        <div className="grid md:grid-cols-3 gap-6">
-          <Reveal className="md:col-span-2">
-            <div className={`${ui.card} p-6 space-y-4`}>
-              <p>{t.about.p1}</p>
-              <p className={ui.textSub}>{t.about.p2}</p>
-              <p className={ui.textSub}>{t.about.p3}</p>
-
-              <div className="grid sm:grid-cols-2 gap-3">
-                {t.about.highlights.map((h) => (
-                  <div key={h} className={`${ui.pill} text-sm`}>
-                    ✅ {h}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal>
-            <div className={`${ui.card} p-6`}>
-              <p className="font-semibold mb-4">
-                {lang === "uz" ? "Kontakt" : lang === "ru" ? "Контакты" : "Contacts"}
-              </p>
-
-              <div className="space-y-3 text-sm">
-                <p className="flex items-center gap-2">
-                  <IconMail className="h-4 w-4" />
-                  {PROFILE.email}
-                  <CopyText text={PROFILE.email} />
-                </p>
-                <p className="flex items-center gap-2">
-                  <IconPhone className="h-4 w-4" />
-                  {PROFILE.phone}
-                  <CopyText text={PROFILE.phone} />
-                </p>
-              </div>
-
-              <a href="#contact" className={`${ui.btnPrimary} mt-6`}>
-                {lang === "uz" ? "Yozish" : lang === "ru" ? "Написать" : "Message"}{" "}
-                <IconArrowRight className="h-4 w-4" />
-              </a>
-            </div>
-          </Reveal>
-        </div>
+        <Reveal>
+          <div className={`${ui.card} p-6 space-y-4`}>
+            <p>{t.about.p1}</p>
+            <p className={ui.textSub}>{t.about.p2}</p>
+            <p className={ui.textSub}>{t.about.p3}</p>
+          </div>
+        </Reveal>
       </Section>
 
       {/* SKILLS */}
@@ -228,27 +188,19 @@ export default function Page() {
 
       {/* EXPERIENCE */}
       <Section id="experience" title={t.titles.exp}>
-        <div className="space-y-6">
-          {EXPERIENCE.map((e) => (
-            <Reveal key={e.period}>
-              <div className={`${ui.card} p-6`}>
-                <div className="flex justify-between flex-wrap gap-2">
-                  <div>
-                    <p className="font-semibold">{e.role}</p>
-                    <p className={ui.textSub}>{e.company}</p>
-                  </div>
-                  <span className={ui.pill}>{e.period}</span>
-                </div>
-
-                <ul className="list-disc pl-5 mt-4 space-y-2 text-sm">
-                  {e.bullets.map((b) => (
-                    <li key={b}>{b}</li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        {EXPERIENCE.map((e) => (
+          <Reveal key={e.period}>
+            <div className={`${ui.card} p-6`}>
+              <p className="font-semibold">{e.role}</p>
+              <p className={ui.textSub}>{e.company}</p>
+              <ul className="list-disc pl-5 mt-3 text-sm">
+                {e.bullets.map((b) => (
+                  <li key={b}>{b}</li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        ))}
       </Section>
 
       {/* PROJECTS */}
@@ -256,30 +208,22 @@ export default function Page() {
         <div className="grid md:grid-cols-3 gap-6">
           {PROJECTS.map((p) => (
             <Reveal key={p.name}>
-              <div className={`${ui.card} p-6 flex flex-col`}>
+              <button
+                onClick={() => setActiveProject(p)}
+                className={`${ui.card} p-6 text-left`}
+              >
                 <p className="font-semibold">{p.name}</p>
-                <p className={`${ui.textSub} mt-2`}>{p.desc}</p>
-
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {p.stack.map((s) => (
-                    <span key={s} className={ui.pill}>
-                      {s}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-6 flex gap-3">
-                  <a href={p.links.demo} className={ui.btnPrimary}>
-                    Demo <IconArrowRight className="h-4 w-4" />
-                  </a>
-                  <a href={p.links.code} className={ui.btnGhost}>
-                    Code
-                  </a>
-                </div>
-              </div>
+                <p className={ui.textSub}>{p.desc}</p>
+              </button>
             </Reveal>
           ))}
         </div>
+
+        <ProjectModal
+          open={!!activeProject}
+          project={activeProject}
+          onClose={() => setActiveProject(null)}
+        />
       </Section>
 
       {/* SERVICES */}
@@ -289,7 +233,7 @@ export default function Page() {
             <Reveal key={s.title}>
               <div className={`${ui.card} p-6`}>
                 <p className="font-semibold">{s.title}</p>
-                <p className={`${ui.textSub} mt-2`}>{s.desc}</p>
+                <p className={ui.textSub}>{s.desc}</p>
               </div>
             </Reveal>
           ))}
@@ -300,13 +244,7 @@ export default function Page() {
       <Section id="contact" title={t.titles.contact}>
         <Reveal>
           <div className={`${ui.card} p-6 max-w-xl`}>
-            <p className={ui.textSub}>
-              {lang === "uz"
-                ? "Telegram yoki email orqali yozing."
-                : lang === "ru"
-                ? "Пишите в Telegram или на email."
-                : "Reach me via Telegram or email."}
-            </p>
+            <p className={ui.textSub}>{t.contactText}</p>
 
             <div className="mt-4 space-y-3 text-sm">
               <p className="flex items-center gap-2">
@@ -321,18 +259,9 @@ export default function Page() {
               </p>
             </div>
 
-            <div className="mt-6 flex gap-3">
-              <a
-                href={PROFILE.links.telegram}
-                target="_blank"
-                className={ui.btnPrimary}
-                rel="noreferrer"
-              >
-                Telegram <IconArrowRight className="h-4 w-4" />
-              </a>
-              <a href={`mailto:${PROFILE.email}`} className={ui.btnGhost}>
-                Email
-              </a>
+            {/* FORM */}
+            <div className="mt-6">
+              <ContactForm lang={lang} />
             </div>
           </div>
         </Reveal>
